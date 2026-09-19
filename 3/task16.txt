@@ -1,0 +1,73 @@
+# todo: База данных пользователя.
+# Задан массив объектов пользователя
+
+users = [{'login': 'Piter', 'age': 23, 'group': "admin"},
+         {'login': 'Ivan',  'age': 10, 'group': "guest"},
+         {'login': 'Dasha', 'age': 30, 'group': "master"},
+         {'login': 'Fedor', 'age': 13, 'group': "guest"}]
+
+Написать фильтр который будет выводить отсортированные объекты по возрасту(больше введеного)
+,первой букве логина, и заданной группе.
+
+#Сперва вводится тип сортировки:
+1. По возрасту
+2. По первой букве
+3. По группе
+
+тип сортировки: 1
+
+#Затем сообщение для ввода
+Ввидите критерии поиска: 16
+
+Результат:
+#Пользователь: 'Piter' возраст 23 года , группа  "admin"
+#Пользователь: 'Dasha' возраст 30 лет , группа  "master"
+
+
+
+users = [
+    {'login': 'Piter', 'age': 23, 'group': "admin"},
+    {'login': 'Ivan',  'age': 10, 'group': "guest"},
+    {'login': 'Dasha', 'age': 30, 'group': "master"},
+    {'login': 'Fedor', 'age': 13, 'group': "guest"},
+    {'login': 'Maria', 'age': 26, 'group': "user"},
+    {'login': 'Viacheslav', 'age': 24, 'group': "army"},
+]
+
+print("Вводим тип сортировки:")
+print("1. по возрасту")
+print("2. по первой букве логина")
+print("3. по группе")
+
+vbr_sort = input("тип сортировки: ")
+if vbr_sort == '1':
+    crit = int(input("Введите критерии поиска (минимальный возраст): "))
+    filter_users = [user for user in users if user['age'] > crit]
+    filter_users.sort(key=lambda x: x['age'])
+elif vbr_sort == '2':
+    crit = input("Введите критерии поиска (первая буква логина): ")
+    filter_users = [user for user in users if user['login'].lower().startswith(crit.lower())]
+    filter_users.sort(key=lambda x: x['login'])
+elif vbr_sort == '3':
+    crit = input("Введите критерии поиска (название группы): ")
+    filter_users = [user for user in users if user['group'].lower().startswith(crit.lower())]
+    filter_users.sort(key=lambda x: x['group'])
+else:
+    print("Такого типа сортировки пока не существует, но мы работаем над этим. Пожалуйста, введите 1, 2 или 3.")
+
+print("\nРезультат")
+if not filter_users:
+    print("Пользователь по вашему запрсу не найден.")
+else:
+    for user in filter_users:
+        age = user['age']
+        
+print(f"#пользователь: '{user['login']}' возраст: {age} , группа: \"{user['group']}\"")
+
+Вводим тип сортировки:
+1. по возрасту
+2. по первой букве логина
+3. по группе
+
+Результат
+#пользователь: 'Viacheslav' возраст: 24 , группа: "army"
