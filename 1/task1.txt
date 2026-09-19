@@ -1,0 +1,30 @@
+# todo: Определить в коде переменные:
+# 1. Целочисленного типа
+# 2. Вещественного типа
+# 3. Логического типа
+# 4. Строкового типа
+# 5. Пустого типа
+
+perem = (666, 6.6, True, "sixseven", None)
+slice0 = perem[0]
+print(type(slice0))
+
+slice1 = perem[1]
+print(type(slice1))
+
+slice2 = perem[2]
+print(type(slice2))
+
+slice3 = perem[3]
+print(type(slice3))
+
+slice4 = perem[4]
+print(type(slice4))
+
+# Вывести их типы.
+
+<class 'int'>
+<class 'float'>
+<class 'bool'>
+<class 'str'>
+<class 'NoneType'>

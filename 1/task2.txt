@@ -1,0 +1,95 @@
+# todo: Преобразуйте переменную age и foo в число
+# age = "23"
+# foo = "23abc"
+#
+
+#age можно преобразовать с помощью
+age = int(age)
+print(type(age))
+<class 'int'>
+#преобразование foo с классом str в int вызовет ошибку. Можно разделить цифры от символов. 
+
+
+# Преобразуйте переменную age в Boolean
+# age = "123abc"
+#
+
+#преобразовать str в Boolean можно с помощью bool()
+
+foo = "123abc"
+print(type(foo))
+<class 'str'>
+
+foo = bool(foo)
+print(type(foo))
+<class 'bool'>
+
+
+
+# Преобразуйте переменную flag в Boolean
+# flag = 1
+#
+с помощью bool:
+flag = 1
+print(type(flag))
+flag = bool(flag)
+print(type(flag))
+<class 'int'>
+<class 'bool'>
+
+
+# Преобразуйте значение в Boolean
+# str_one = "Privet"
+# str_two = ""
+#
+
+str_one = "Privet"
+print(type(str_one))
+str_one = bool(str_one)
+print(type(str_one))
+
+<class 'str'>
+<class 'bool'>
+
+
+str_two = ""
+print(type(str_two))
+str_two = bool(str_two)
+print(type(str_two))
+
+<class 'str'>
+<class 'bool'>
+
+
+# Преобразуйте значение 0 и 1 в Boolean
+#
+x = 1
+print(type(x))
+x = bool(x)
+print(type(x))
+<class 'int'>
+<class 'bool'>
+
+
+y = 0
+print(type(y))
+y = bool(y)
+print(type(y))
+
+<class 'int'>
+<class 'bool'>
+
+
+# Преобразуйте False в строку
+
+fin = str(False)
+print(type(fin))
+print(fin)
+
+<class 'str'>
+False
+
+
+
+
+
