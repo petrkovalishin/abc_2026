@@ -1,0 +1,190 @@
+#todo:
+1. Создайте виртуальное окружение через терминал в текущей папки нового проекта.
+Название окружению дайте по названию проекта. Переключитесь на созданное новое окружение.
+
+2. Установите пакет pandas.
+Убедитесь что он установился и добавился в папку виртуального окружения.
+
+
+3. Создайте файл test_package.py в него добавьте строки
+
+import pandas as pd
+pd.test()
+
+Убедитесь что пакет подкючен.
+
+4. Создайте свой пакет helpers со структурой
+
+helpers
+    __init__.py
+    io.py
+    crypt.py
+
+В модуль io.py разместите ранее написаный logger
+В модуль crypt.py добавьте функцию шифра цезаря.
+
+5. Создайте новый файл test.py  Подключите в него функцию логера и шифрования.
+Проверьте их работу.
+
+
+
+--------------------------------------
+
+Шаг 1. Создание виртуального окружения
+Открываем терминал в папке нового проекта (например, проект называется myproject):
+
+# Переходим в папку проекта
+cd путь/к/myproject
+
+# Создаём виртуальное окружение с именем проекта
+python -m venv myproject
+
+# Активация окружения
+source myproject/bin/activate
+
+
+Шаг 2. Установка pandas
+pip install pandas
+
+# Проверка
+pip show pandas
+
+# Список установленных пакетов
+pip list
+Проверка папки окружения:
+ls myproject/lib/python3.*/site-packages
+Там должны появиться папки...
+
+Шаг 3. Файл test_package.py
+python
+import pandas as pd
+
+pd.test()
+Запуск:
+python test_package.py
+
+import pandas as pd
+print(pd.__version__)
+
+Шаг 4. Свой пакет helpers
+Структура:
+text
+helpers/
+    __init__.py
+    io.py
+    crypt.py
+helpers/__init__.py
+python
+from .io import logger
+from .crypt import caesar_cipher
+
+__all__ = ["logger", "caesar_cipher"]
+helpers/io.py
+Ранее написанный логгер:
+
+python
+import logging
+import sys
+
+
+def logger(name: str = "app", level: int = logging.INFO) -> logging.Logger:
+    log = logging.getLogger(name)
+    log.setLevel(level)
+
+    if not log.handlers:
+        handler = logging.StreamHandler(sys.stdout)
+        formatter = logging.Formatter(
+            "%(asctime)s | %(name)s | %(levelname)s | %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
+        handler.setFormatter(formatter)
+        log.addHandler(handler)
+
+    return log
+helpers/crypt.py
+
+Шифр Цезаря:
+def caesar_cipher(text: str, shift: int = 3, decrypt: bool = False) -> str:
+    if decrypt:
+        shift = -shift
+
+    result = []
+    for ch in text:
+        if ch.isalpha():
+            base = ord('A') if ch.isupper() else ord('a')
+            if 'А' <= ch <= 'я' or ch in 'Ёё':
+                if ch.isupper():
+                    base = ord('А')
+                    alphabet_size = 32  # без Ё
+                else:
+                    base = ord('а')
+                    alphabet_size = 32
+                
+                offset = ord(ch) - base
+                if offset < 0 or offset >= alphabet_size:
+                    result.append(ch)
+                    continue
+                new_offset = (offset + shift) % alphabet_size
+                result.append(chr(base + new_offset))
+            else:
+                new_offset = (ord(ch) - base + shift) % 26
+                result.append(chr(base + new_offset))
+        else:
+            result.append(ch)
+
+    return "".join(result)
+
+
+Шаг 5. Файл test.py
+python
+from helpers import logger, caesar_cipher
+
+# --- Проверка логгера ---
+log = logger("test_app")
+log.info("Логгер успешно подключён")
+log.warning("Это предупреждение")
+log.error("Это ошибка")
+
+# --- Проверка шифра Цезаря ---
+original = "Hello, World!"
+encrypted = caesar_cipher(original, shift=3)
+decrypted = caesar_cipher(encrypted, shift=3, decrypt=True)
+
+print(f"Оригинал:   {original}")
+print(f"Зашифровано: {encrypted}")
+print(f"Расшифровано: {decrypted}")
+
+assert decrypted == original, "Ошибка шифрования!"
+log.info("Проверка шифра Цезаря прошла успешно")
+
+Запуск:
+python test.py
+
+
+вывод:
+
+2025-01-01 12:00:00 | test_app | INFO | Логгер успешно подключён
+2025-01-01 12:00:00 | test_app | WARNING | Это предупреждение
+2025-01-01 12:00:00 | test_app | ERROR | Это ошибка
+Оригинал:   Hello, World!
+Зашифровано: Khoor, Zruog!
+Расшифровано: Hello, World!
+2025-01-01 12:00:00 | test_app | INFO | Проверка шифра Цезаря прошла успешно
+
+
+
+Итоговая структура проекта
+text
+myproject/
+├── myproject/
+│   ├── Scripts/  (Win)
+│   ├── bin/      (Linux/macOS)
+│   └── Lib/site-packages/
+├── helpers/
+│   ├── __init__.py
+│   ├── io.py
+│   └── crypt.py
+├── test_package.py
+└── test.py
+
+
