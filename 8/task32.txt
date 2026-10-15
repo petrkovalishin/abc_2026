@@ -1,0 +1,88 @@
+# Инкапсуляция и property
+# todo: Класс "Пользователь" (Валидация email)
+# Создайте класс User. У него должны быть свойства email и password.
+# При установке email проверяйте, что строка содержит символ @ (простая валидация).
+# При установке пароля, храните не сам пароль, а его хеш (для простоты можно использовать hash()).
+# Сделайте метод check_password(password), который проверяет, соответствует ли хеш переданного
+# пароля сохраненному хешу.
+
+# Пример использования
+user = User("test@example.com", "secret")
+print(user.email)  # test@example.com
+# print(user.password) # AttributeError
+print(user.check_password("secret"))  # True
+print(user.check_password("wrong"))   # False
+
+
+
+-------
+class User:
+    """
+    Класс пользователя с валидацией email и хранением хеша пароля.
+    """
+    
+    def __init__(self, email, password):
+        # Используем сеттеры для проверки и сохранения значений
+        self.email = email
+        self.password = password
+    
+    @property
+    def email(self):
+        """Геттер для email."""
+        return self._email
+    
+    @email.setter
+    def email(self, value):
+        """Сеттер для email с простой валидацией на наличие символа @."""
+        if not isinstance(value, str) or '@' not in value:
+            raise ValueError("Email должен содержать символ '@'")
+        self._email = value
+    
+    @property
+    def password(self):
+        """
+        Геттер для пароля.
+        Не возвращает сам пароль — только для демонстрации, что прямой доступ невозможен.
+        """
+        raise AttributeError("Доступ к паролю запрещён")
+    
+    @password.setter
+    def password(self, value):
+        """Сеттер для пароля — сохраняем только его хеш."""
+        if not isinstance(value, str) or not value:
+            raise ValueError("Пароль должен быть непустой строкой")
+        # Храним хеш пароля, а не сам пароль
+        self._password_hash = hash(value)
+    
+    def check_password(self, password):
+        """
+        Проверяет, соответствует ли хеш переданного пароля сохранённому хешу.
+        
+        :param password: строка с паролем для проверки
+        :return: True, если пароль верный, иначе False
+        """
+        return hash(password) == self._password_hash
+
+
+# Пример использования
+if __name__ == "__main__":
+    # Запрашиваем email, пока не будет введён корректный
+    while True:
+        email = input("Введите email: ")
+        if '@' in email:
+            break
+        else:
+            print("Ошибка: email должен содержать символ '@'. Попробуйте снова.")
+    
+    # Запрашиваем пароль
+    password = input("Введите пароль: ")
+    
+    # Создаём пользователя с введёнными данными
+    user = User(email, password)
+    
+    # Выводим email
+    print(user.email)
+    
+    # Проверяем пароль, который введёт пользователь повторно
+    check = input("Введите пароль для проверки: ")
+    print(user.check_password(check))

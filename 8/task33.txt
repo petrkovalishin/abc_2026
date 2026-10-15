@@ -1,0 +1,56 @@
+# Инкапсуляция и property
+# todo: Класс "Товар" (Защита от отрицательной цены)
+# Создайте класс Product. У него есть свойства name (простая строка) и price.
+# При установке цены проверяйте, что она не отрицательная.
+# Если пытаются установить отрицательную цену, устанавливайте 0.
+
+
+# Пример использования
+product = Product("Book", 10)
+print(product.price)  # 10
+product.price = -5
+print(product.price)  # 0
+
+--------------------------------------------------------------------
+class Product:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price  # используется сеттер
+
+    @property
+    def price(self):
+        return self._price
+
+    @price.setter
+    def price(self, value):
+        self._price = value if value >= 0 else 0
+
+
+def get_float(prompt):
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Ошибка: введите число.")
+
+
+products = []
+
+while True:
+    name = input("Введите название продукта (или 'stop' для завершения): ")
+    if name.lower() == "stop":
+        break
+
+    price = get_float("Введите цену продукта: ")
+    product = Product(name, price)
+    products.append(product)
+    print(f"Добавлено: {product.name} — {product.price}")
+
+# Запись списка в файл list.txt
+with open("list.txt", "w", encoding="utf-8") as f:
+    for product in products:
+        f.write(f"{product.name} — {product.price}\n")
+
+print("\nСписок продуктов сохранён в файл list.txt:")
+for product in products:
+    print(f"{product.name} — {product.price}")

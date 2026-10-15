@@ -1,0 +1,82 @@
+# Инкапсуляция и property
+# todo: Класс "Температура"
+# Создайте класс Temperature, который хранит температуру в градусах Цельсия.
+# Добавьте свойство для получения и установки температуры в Фаренгейтах и Кельвинах.
+# Внутренне температура должна храниться только в Цельсиях.
+
+# celsius (get, set) - работа с Цельсиями.
+# fahrenheit (get, set) - при установке конвертирует значение в Цельсии.
+# kelvin (get, set) - при установке конвертирует значение в Цельсии.
+
+# Пример использования
+t = Temperature(25)
+print(f"{t.celsius}C, {t.fahrenheit}F, {t.kelvin}K")
+t.fahrenheit = 32
+print(f"После установки 32F: {t.celsius}C")
+
+
+class Temperature:
+
+    def __init__(self, celsius: float = 0.0):
+        self._celsius = celsius
+
+    #  Цельсий
+    @property
+    def celsius(self) -> float:
+        return self._celsius
+
+    @celsius.setter
+    def celsius(self, value: float) -> None:
+        if value < -273.15:
+            raise ValueError("Температура не может быть ниже абсолютного нуля (-273.15 °C)")
+        self._celsius = value
+
+    # Фаренгейт
+    @property
+    def fahrenheit(self) -> float:
+        return self._celsius * 9 / 5 + 32
+
+    @fahrenheit.setter
+    def fahrenheit(self, value: float) -> None:
+        celsius_value = (value - 32) * 5 / 9
+        if celsius_value < -273.15:
+            raise ValueError("Температура не может быть ниже абсолютного нуля (-273.15 °C)")
+        self._celsius = celsius_value
+
+    # Кельвин
+    @property
+    def kelvin(self) -> float:
+        return self._celsius + 273.15
+
+    @kelvin.setter
+    def kelvin(self, value: float) -> None:
+        celsius_value = value - 273.15
+        if celsius_value < -273.15:
+            raise ValueError("Температура не может быть ниже абсолютного нуля (0 K)")
+        self._celsius = celsius_value
+
+
+# Пример использования
+if __name__ == "__main__":
+    t = Temperature(25)
+    print(f"Цельсий:     {t.celsius:.2f} °C")
+    print(f"Фаренгейт:   {t.fahrenheit:.2f} °F")
+    print(f"Кельвин:     {t.kelvin:.2f} K")
+
+    print("\n--- Меняем через Фаренгейт (32 °F = 0 °C) ---")
+    t.fahrenheit = 32
+    print(f"Цельсий:     {t.celsius:.2f} °C")
+    print(f"Фаренгейт:   {t.fahrenheit:.2f} °F")
+    print(f"Кельвин:     {t.kelvin:.2f} K")
+
+    print("\n--- Меняем через Кельвин (300 K ≈ 26.85 °C) ---")
+    t.kelvin = 300
+    print(f"Цельсий:     {t.celsius:.2f} °C")
+    print(f"Фаренгейт:   {t.fahrenheit:.2f} °F")
+    print(f"Кельвин:     {t.kelvin:.2f} K")
+
+    print("\n--- Пытаемся установить ниже абсолютного нуля ---")
+    try:
+        t.kelvin = -5
+    except ValueError as e:
+        print(f"Ошибка: {e}")
