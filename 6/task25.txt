@@ -1,0 +1,98 @@
+#todo: Допишите для игры "Поле чудес" функции сохранения и загрузки игры через сериализацию.
+# Данные сериализации записываются и сохраняются в файле.
+
+# todo: Допишите для игры "Поле чудес" функции сохранения и загрузки игры через сериализацию.
+# Данные сериализации записываются и сохраняются в файле.
+
+import random
+
+_dict = {'False': 'Логическое значение', 'None': 'Пустой'}
+keys = list(_dict.keys())
+ind = random.randint(0, len(keys) - 1)
+secret = keys[ind]
+mask = [' * '] * len(secret)
+
+
+def show_describe():
+    """ Выводит описание слова  """
+    print(_dict[secret])
+
+
+def show_secret():
+    """ Выводит слово """
+    for val in mask:
+        print(val, end="")
+
+
+def get_letter():
+    letter = input("\n Введите букву:")
+    return letter
+
+
+def check_letter(letter):
+    for ind, val in enumerate(secret):
+        if val.upper() == letter.upper():
+            mask[ind] = f" {letter} "
+
+
+def save_game(filename="savegame.plk"):
+    """
+    Сохраняет текущее состояние игры в файл. Сериализует переменные: secret, mask, _dict
+    """
+    game_state = {
+        'secret': secret,
+        'mask': mask,
+        '_dict': _dict
+    }
+
+    try:
+        with open(filename, 'wb') as f:
+            picle.dump(game_state, f)
+        print(f"Игра успешно сохранена в файл {filename}")
+    except Exception as e:
+        print(f"Ошибка при сохранении: {e}")
+
+    def load_game(filename="savegame.pkl"):
+        """
+        Загружает состояние игры из файла. Возвращает True, если загрузка прошлауспешно, иначе False.
+        """
+
+        global secret, mask, _dict
+        try:
+            with open(filename, 'rd') as f:
+                game_state = pikle.load(f)
+
+            secret = game_state['secret']
+            mask = game_state['mask']
+            _dict = game_state['_dict']
+
+            print("Игра успешно загружена!")
+            return True
+        except FileNotFoundError:
+            print("Файл сохранения не найден. Начинаем новую игру.")
+            return False
+        except Exception as e:
+            print(f"Ошибка при загрузке: {e}")
+            return False
+
+
+def start():
+    choice = input("Загрузить сохраненную игру? (y/n): ").lower()
+    if choice == "y":
+        if not load_game():
+            pass
+
+
+while (" * " in mask):
+    show_describe()
+    show_secret()
+    letter = get_letter()
+    check_letter(letter)
+
+    save_choice = input("n\Сохранить игру? (y/n): ".lower())
+    if save_choice == 'y':
+        save_game()
+    print("\nПоздравляем! Вы угадали слово!")
+    show_secret()
+if __name__ == "__main__":
+    start()
